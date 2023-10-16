@@ -67,6 +67,7 @@ class Executor {
     log.info('Phase: Parse');
     final parsedInput = inputParser.parse(rawInput);
     if (parsedInput == null) return;
+    final workspaceOldCode = workspaceCode;
     workspaceCode = workspaceCode.merge(parsedInput);
 
     log.info('Phase: Write');
@@ -88,6 +89,7 @@ class Executor {
       force: forceReload,
     );
     if (report.success != true) {
+      workspaceCode = workspaceOldCode;
       log.warning(
           'Error: Hot reload failed, maybe because code has syntax error?');
       return;
